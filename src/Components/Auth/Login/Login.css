@@ -1,0 +1,52 @@
+
+.my-login-container {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: blue;
+    display: flex;
+    font-family:Arial, Helvetica, sans-serif;
+    color: blue;
+}
+.my-login-page-container {
+    width: 30%;
+    height: 80vh;
+    margin-top: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: azure;
+    border-radius: 3%;
+    padding: 2%;
+}
+.my-login-logo-container {
+    text-align: center;
+    
+}
+.my-login-logo-container img {
+    max-width: 30%;
+    height: auto;
+}
+.my-login-form-box {
+    margin: 5%;
+    background-color: white;
+    padding: 5%;
+    border-radius: 3%;
+}
+.my-login-forgot-password {
+    text-align: center;
+    margin-top: 4%;
+}
+.my-login-forgot-password-link {
+    text-decoration: none;
+
+}
+
+.my-login-forgot-password-link:hover {
+    color: blueviolet;
+    
+}
+.my-login-remember-me {
+    margin: 3%;
+    padding: 3%;
+}
