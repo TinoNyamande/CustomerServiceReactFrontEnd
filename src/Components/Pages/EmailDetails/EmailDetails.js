@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import Overlay from "../../Layout/Overlay/Overlay";
 import EmailBody from "../EmailBody/EmailBody";
 import "./EmailDetails.css"
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 
 function EmailDetails({ match }) {
@@ -16,6 +19,10 @@ function EmailDetails({ match }) {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({});
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     debugger
@@ -49,7 +56,7 @@ function EmailDetails({ match }) {
       <div className="row">
         <div className="col-md-12">
           <div className="archive-header-container">
-            <h2>{data.subject}</h2>
+            <button className="btn btn-sm btn-primary form-control" onClick={handleShow} >Reply</button>
           </div>
         </div>
       </div>
@@ -97,9 +104,7 @@ function EmailDetails({ match }) {
                   readOnly
                 />
               </div>
-              <div className="app-form-box">
-                <button className="btn my-btn form-control">Reply</button>
-              </div>
+            
             </div>
 
             <div className="document-preview" dangerouslySetInnerHTML={{ __html:data.body}}>
@@ -109,7 +114,34 @@ function EmailDetails({ match }) {
           </div>
         </div>
       </div>
-      <Overlay outlaymessage="Saving" isLoading={isLoading} />
+      <Modal className="my-modal" show={show} onHide={handleClose} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Reply Email</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>Reply</Form.Label>
+              <Form.Control as="textarea" rows={12} />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Send
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Overlay outlaymessage="Loading" isLoading={isLoading} />
     </div>
   );
 }

@@ -51,3 +51,7 @@
     background-color: azure;
     color: #333;
 }
+
+.my-modal-text-area {
+    height: 300px;
+}

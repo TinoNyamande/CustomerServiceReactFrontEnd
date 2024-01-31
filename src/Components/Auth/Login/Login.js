@@ -2,51 +2,61 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./Login.css";
 import { Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Overlay from "../../Layout/Overlay/Overlay";
+import ToastNotification from "../../Layout/ToastNotification";
+import { useAuth } from "../AuthContext";
 function Login() {
   const [inputs, setInputs] = useState({});
   const [token,setToken] = useState("");
   const [isSaving , setIsSaving] = useState(false);
   const outlaySavingMessage = "Logging in";
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const [title, setTitle] = useState("");
+  const [message,setMessage] = useState("");
+  const { loggedIn, login, logout } = useAuth();
 
- useEffect(()=>{
-    
-  const tokenExists = !!Cookies.get('token')
-  if (tokenExists == true ) {
-    setToken(tokenExists);
+  
+  const closeModal =() =>{
+    setShow(false)
   }
- },[])
-
- if (token) {
-    console.log(token)
-    debugger
-    return <Navigate to="/" replace/>
- }
-
 
   const handleChange = (event) => {
     let name = event.target.name;
     let value = event.target.value;
     setInputs({...inputs , [name]:value})
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log(inputs)
+    setErrorMessage("")
     setIsSaving(true);
-    axios.post("https://localhost:7005/api/Auth/Login" ,inputs)
+    await axios.post("https://localhost:7005/api/Auth/Login" ,inputs)
           .then (response => {
             console.log(response.data);
             const token = response.data.token;
             Cookies.set("token",token,{expires:1,secure:true});
-            alert("Logged in")
+            
             setIsSaving(false);
-            return <Navigate to="/" replace/>
+            setTitle("Success")
+            setMessage("Log in successful")
+            login();
+            setShow(true)
+            setTimeout(()=>{
+              setShow(false)
+            },3000)
+            
+           setTimeout(()=>{
+            navigate("/")
+           },3000)
 
           })
           .catch (error => {
             console.log(error.response.data.message)
+            setErrorMessage(error.response.data.message)
             setIsSaving(false);
           })
     
@@ -54,6 +64,8 @@ function Login() {
 
   return (
     <div className="my-login-container">
+
+    {!show && (
       <div className="my-login-page-container">
         <div className="my-login-logo-container">
           <img src="/logo512.png" />
@@ -67,6 +79,9 @@ function Login() {
             <label>Password</label>
             <input type="password" onChange={handleChange} className="form-control" name="password" value={inputs.password||""} />
           </div>
+          {errorMessage && (<div className="error-message-container">
+            <p>{errorMessage}</p>
+            </div>)}
           <div className="my-login-remember-me">
             <input type="checkbox" />
             <label>Remember me</label>
@@ -80,8 +95,16 @@ function Login() {
             </Link>
           </div>
         </form>
+        
         <Overlay outlaymessage= {outlaySavingMessage} isLoading={isSaving}/>
       </div>
+    )}
+    {show&& (
+      <div className="my-modal-container">
+             <ToastNotification title={title} message ={message} show={show} closeModal={closeModal} isHidden={true} delay={20000}/>
+             </div>
+
+    )}
     </div>
   );
 }

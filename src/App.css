@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  color: white;
 }
 
 .App-logo {
@@ -35,4 +36,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+.app-container {
+  width: 100%;
+  margin: 0%;
+  padding: 0%;
+  height: 100vh;
+  background-color: rgb(73, 206, 117);
+  overflow: auto;
 }

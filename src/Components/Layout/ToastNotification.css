@@ -1,0 +1,38 @@
+.my-toast-container {
+    background-color:rgb(73, 206, 117);
+    min-height: 30vh;
+    height: auto;
+}
+.my-toast-header {
+    margin-left: auto;
+    margin-right: auto;
+}
+.my-toast-body {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10%;
+    padding-bottom: 0%;
+    
+}
+.my-toast-close-button {
+    color: white;
+    background-color: gray;
+    border: none;
+}
+.my-toast-close-button-container {
+    margin-top: 20%;
+    text-align: center;
+}
+.toast-header button {
+    display: none;
+  }
+  .my-toast-close-button:hover {
+    background-color: black;
+    color: aliceblue;
+  }
+
+
+  .my-toast-body-text {
+    text-align: center;
+    color: aliceblue;
+  }
