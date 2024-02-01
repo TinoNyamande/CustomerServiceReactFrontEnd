@@ -40,6 +40,10 @@
    text-align: center;
 }
 .my-big-column {
-    flex: 6;
+    flex: 5;
+    text-align: center;
+}
+.my-mid-column {
+    flex: 4;
     text-align: center;
 }

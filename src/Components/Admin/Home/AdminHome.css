@@ -1,0 +1,46 @@
+.my-home-container {
+    margin-left: 40%;
+ }
+ .home-header {
+     text-align: center;
+     margin-bottom: 2%;
+     color: white;
+     margin-top: 2%;
+ }
+ .home-table {
+     background-color: azure;
+     margin: 0
+     
+ }
+ .table-text-header {
+     color: green;
+     font-size: 150%;
+ 
+ }
+ 
+ .table-text{
+     color: green;
+ }
+ .my-table-column {
+     border: 1px solid black;
+ }
+ .my-table-container {
+     height: 100vh;
+     flex: 1;
+     overflow-y: auto;
+     background-color: azure;
+     margin-bottom: 5%;
+ }
+ .my-table-row {
+    flex-direction:row ;
+    display: flex;
+ }
+ .my-small-column {
+    flex: 1; 
+    text-align: center;
+ }
+ .my-big-column {
+     flex: 6;
+     text-align: center;
+ }
+ 
