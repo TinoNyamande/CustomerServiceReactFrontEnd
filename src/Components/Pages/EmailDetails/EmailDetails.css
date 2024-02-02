@@ -55,3 +55,13 @@
 .my-modal-text-area {
     height: 300px;
 }
+
+.my-modal-container {
+    z-index: 2;
+    margin-left: auto;
+    margin-right: auto;
+}
+.applicatin-form-container {
+    z-index: 1;
+    display: flex;
+}

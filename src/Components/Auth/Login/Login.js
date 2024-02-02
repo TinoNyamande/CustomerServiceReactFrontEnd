@@ -56,8 +56,9 @@ function Login() {
           })
           .catch (error => {
             console.log(error.response.data.message)
-            setErrorMessage(error.response.data.message)
             setIsSaving(false);
+            setErrorMessage(error.response.data.message)
+            
           })
     
   };

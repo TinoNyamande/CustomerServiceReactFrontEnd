@@ -4,27 +4,28 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
-import "./Home.css";
 import { Navigate } from "react-router-dom";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Auth/AuthContext";
+import Nodata from "../../Layout/Nodata/Nodata";
 
-function Home() {
+export default function AdminHome() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const {login , logout} = useAuth();
+  const { login, logout } = useAuth();
   useEffect(() => {
     const tokenExists = !!Cookies.get("token");
     if (tokenExists) {
       const token = Cookies.get("token");
       const payload = jwtDecode(token);
-      console.log(payload)
       const userName = payload["username"];
       axios
-        .get(`https://localhost:7005/api/Emails/GetMyEmails?email=${userName}`)
+        .get(`https://localhost:7005/api/Emails/GetEscalatedEmails`)
         .then((response) => {
-           login();
+          console.log(data);
+          console.log(data.length)
+          login();
           setData(response.data);
         })
         .catch((error) => {
@@ -45,12 +46,14 @@ function Home() {
   return (
     <div className="my-page-home container">
       <div className="home-header">
-        <h3>All your Outstanding cases</h3>
+        <h3>Escalated Emails</h3>
         <p></p>
-        <input className="form-control" placeholder="Search" />
+        <input className="form-control" placeholder="Search" readOnly={data.length<0?false:true} />
       </div>
       <hr></hr>
-      <div className="my-table-container">
+      {data.length <1 && <Nodata title="No data" message = "There are currently no escalated emails" />}
+      {data.length >0 && 
+        <div className="my-table-container">
         <div className="my-table-row my-table-header">
           <div className="my-small-column my-table-column">
             <p className="table-text-header">Date</p>
@@ -58,77 +61,45 @@ function Home() {
           <div className="my-small-column my-table-column">
             <p className="table-text-header">Time</p>
           </div>
+          <div className="my-small-column my-table-column">
+            <p className="table-text-header">User</p>
+          </div>
           <div className="my-big-column my-table-column">
             <p className="table-text-header">Subject</p>
           </div>
         </div>
         <div className="my-table-body">
-        {data.map((item,index) => (
-              <div key={index} className="my-table-row my-table-body-row" onClick={(()=>{
-                onRowClick(item)
-              })}>
-                <div className="my-small-column my-table-column">
-                <p className="table-text">
-                  {moment(item.emailDate).format("D/M/YYYY")}
-                </p>
-                </div>
-                <div className="my-small-column my-table-column">
-                <p className="table-text">
-                  {moment(item.emailDate).format("HH:MM:SS")}
-                </p>
-                </div>
-                <div className="my-big-column my-table-column">
-                <p className="table-text">
-                  {item.subject}
-                </p>
-                </div>
-              </div>
-            ))}
-            </div>
-      </div>
-      {/* <table className="table table-sm home-table table-bordered ">
-        <thead>
-          <tr>
-            <th>
-              <p className="table-text-header">Date</p>
-            </th>
-            <th>
-              <p className="table-text-header">Time</p>
-            </th>
-            <th>
-              {" "}
-              <p className="table-text-header">Subject</p>
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
           {data.map((item, index) => (
-            <tr
+            <div
               key={index}
+              className="my-table-row my-table-body-row"
               onClick={() => {
                 onRowClick(item);
               }}
             >
-              <td>
-                <p className="table-text">
-                  {moment(item.emailDate).format("HH:MM:SS")}
-                </p>
-              </td>
-              <td>
+              <div className="my-small-column my-table-column">
                 <p className="table-text">
                   {moment(item.emailDate).format("D/M/YYYY")}
                 </p>
-              </td>
-              <td>
+              </div>
+              <div className="my-small-column my-table-column">
+                <p className="table-text">
+                  {moment(item.emailDate).format("HH:MM:SS")}
+                </p>
+              </div>
+              <div className="my-small-column my-table-column">
+                <p className="table-text">
+                  {item.assignedTo}
+                </p>
+              </div>
+              <div className="my-big-column my-table-column">
                 <p className="table-text">{item.subject}</p>
-              </td>
-            </tr>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table> */}
+        </div>
+      </div>
+      }
     </div>
   );
 }
-//<td><Link to={`outstanding-emails/${item.id}`} >{item.id}</Link></td>
-export default Home;
